@@ -1,0 +1,19 @@
+{
+  "name": "@yourusername/fastify-universalrequestparser",
+  "version": "1.0.0",
+  "description": "Production-ready universal request parser for Fastify",
+  "main": "src/index.js",
+  "types": "types/index.d.ts",
+  "keywords": [
+    "fastify",
+    "middleware",
+    "parser",
+    "json",
+    "xml",
+    "csv",
+    "request-parser",
+    "nodejs"
+  ],
+  "author": "Golakoti Kishore",
+  "license": "MIT"
+}
