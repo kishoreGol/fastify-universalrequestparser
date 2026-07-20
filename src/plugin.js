@@ -55,15 +55,13 @@ async function plugin(fastify, options = {}) {
       console.log(parsed);
       console.log('================================',parsed.format);
         request.parsingInfo = {
-        headerContentType: request.headers['content-type'],
+        contentTypeInReqHeader: request.headers['content-type'],
         detectedFormat: parsed.format,      // e.g. xml/json/csv
         convertedTo: 'json'
     };
-        console.log('Parsed Result:');
-        console.log(parsed);
-        console.log('================================');
 
-        return parsed.data;
+
+        return parsed;
     };
 
     /**

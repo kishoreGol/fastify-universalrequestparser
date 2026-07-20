@@ -45,7 +45,7 @@ class UniversalParser {
     const result = await this.parserEngine.parse(buffer, context);
 
     request.parsingInfo = {
-        headerContentType: request.headers['content-type'],
+        contentTypeInReqHeader: request.headers['content-type'],
         detectedParser: result.parser.constructor.name,
         detectedFormat: result.parser.name,
         convertedTo: 'json'
@@ -53,7 +53,7 @@ class UniversalParser {
 
     return {
     parsing: {
-        headerContentType: request.headers["content-type"],
+        contentTypeInReqHeader: request.headers["content-type"],
         detectedFormat: result.parser.name,
         detectedContentType: result.parser.contentType,
         convertedTo: "application/json"
