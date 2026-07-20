@@ -11,10 +11,13 @@ app.post('/users', async (request) => {
     console.log(request.body);
 
     return {
-        received: request.body.toString()
+        success: true,
+        parsing: request.parsingInfo,
+        body: request.body
     };
+
 });
 
 app.listen({
-    port: 3000
+    port: 4000
 });

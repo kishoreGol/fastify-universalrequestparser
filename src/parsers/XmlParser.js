@@ -7,6 +7,7 @@ class XmlParser extends BaseParser {
         super("xml", 90);
 
         this.parser = new XMLParser();
+        this.contentType = "application/xml";
     }
 
     detect(buffer) {

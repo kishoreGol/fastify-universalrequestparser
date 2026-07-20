@@ -33,33 +33,34 @@ class UniversalParser {
      */
     async handleRequest(request, buffer) {
 
-        const context = {
+    const context = {
+        request,
+        headers: request.headers,
+        method: request.method,
+        url: request.url,
+        contentType: request.headers['content-type'],
+        contentLength: request.headers['content-length']
+    };
 
-            request,
+    const result = await this.parserEngine.parse(buffer, context);
 
-            headers: request.headers,
+    request.parsingInfo = {
+        headerContentType: request.headers['content-type'],
+        detectedParser: result.parser.constructor.name,
+        detectedFormat: result.parser.name,
+        convertedTo: 'json'
+    };
 
-            method: request.method,
-
-            url: request.url,
-
-            contentType:
-                request.headers['content-type'],
-
-            contentLength:
-                request.headers['content-length']
-
-        };
-
-        const result =
-            await this.parserEngine.parse(
-                buffer,
-                context
-            );
-
-        return result;
-
-    }
+    return {
+    parsing: {
+        headerContentType: request.headers["content-type"],
+        detectedFormat: result.parser.name,
+        detectedContentType: result.parser.contentType,
+        convertedTo: "application/json"
+    },
+    body: result.data
+};
+}
 
     /**
      * Startup hook.

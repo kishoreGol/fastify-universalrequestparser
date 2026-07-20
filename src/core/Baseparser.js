@@ -1,7 +1,8 @@
 class BaseParser {
-    constructor(name, priority = 0) {
+    constructor(name, priority = 0, contentType = null) {
         this.name = name;
         this.priority = priority;
+        this.contentType = contentType;
     }
 
     detect(buffer, context) {

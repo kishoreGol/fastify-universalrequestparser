@@ -1,7 +1,6 @@
 'use strict';
 
 const defaults = require('./config');
-
 const UniversalParser = require('./core/UniversalParser');
 
 async function plugin(fastify, options = {}) {
@@ -38,7 +37,64 @@ async function plugin(fastify, options = {}) {
     );
 
     /**
-     * Register universal content parser.
+     * Universal Parser Handler
+     */
+    const handler = async (request, body) => {
+
+        console.log('================================');
+        console.log('Incoming Request');
+        console.log('Content-Type:', request.headers['content-type']);
+        console.log('Raw Body:');
+        console.log(body.toString());
+
+        const parsed = await universalParser.handleRequest(
+            request,
+            body
+        );
+      console.log('Parsed Result:');
+      console.log(parsed);
+      console.log('================================',parsed.format);
+        request.parsingInfo = {
+        headerContentType: request.headers['content-type'],
+        detectedFormat: parsed.format,      // e.g. xml/json/csv
+        convertedTo: 'json'
+    };
+        console.log('Parsed Result:');
+        console.log(parsed);
+        console.log('================================');
+
+        return parsed.data;
+    };
+
+    /**
+     * Remove Fastify default parsers
+     */
+    const contentTypes = [
+        'application/json',
+        'application/xml',
+        'text/xml',
+        'text/plain',
+        'application/x-www-form-urlencoded'
+    ];
+
+    for (const type of contentTypes) {
+
+        if (fastify.hasContentTypeParser(type)) {
+            fastify.removeContentTypeParser(type);
+        }
+
+        fastify.addContentTypeParser(
+            type,
+            {
+                parseAs: 'buffer',
+                bodyLimit: config.maxBodySize
+            },
+            handler
+        );
+    }
+
+    /**
+     * Fallback parser
      */
     fastify.addContentTypeParser(
         '*',
@@ -46,14 +102,7 @@ async function plugin(fastify, options = {}) {
             parseAs: 'buffer',
             bodyLimit: config.maxBodySize
         },
-        async function (request, body) {
-
-            return universalParser.handleRequest(
-                request,
-                body
-            );
-
-        }
+        handler
     );
 
     /**
@@ -62,9 +111,7 @@ async function plugin(fastify, options = {}) {
     fastify.addHook(
         'onReady',
         async () => {
-
             await universalParser.onReady();
-
         }
     );
 
@@ -74,12 +121,9 @@ async function plugin(fastify, options = {}) {
     fastify.addHook(
         'onClose',
         async () => {
-
             await universalParser.destroy();
-
         }
     );
-
 }
 
 module.exports = plugin;

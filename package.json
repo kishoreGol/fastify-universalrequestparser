@@ -1,19 +1,46 @@
 {
-  "name": "@yourusername/fastify-universalrequestparser",
+  "name": "@golakotikishore/fastify-universal-parser",
   "version": "1.0.0",
   "description": "Production-ready universal request parser for Fastify",
   "main": "src/index.js",
-  "types": "types/index.d.ts",
+  "homepage": "https://github.com/golakotikishore/fastify-universal-parser",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/golakotikishore/fastify-universal-parser.git"
+  },
+  "bugs": {
+    "url": "https://github.com/golakotikishore/fastify-universal-parser/issues"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "files": [
+    "index.js",
+    "plugin.js",
+    "lib/",
+    "parsers/",
+    "transformers/",
+    "validators/"
+  ],
   "keywords": [
     "fastify",
+    "fastify-plugin",
     "middleware",
     "parser",
     "json",
     "xml",
     "csv",
-    "request-parser",
     "nodejs"
   ],
   "author": "Golakoti Kishore",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "start": "node examples/server.js",
+    "test": "node examples/server.js"
+  },
+  "dependencies": {
+    "fastify": "^5.10.0",
+    "fastify-plugin": "^5.0.0",
+    "fast-xml-parser": "^5.x.x"
+  }
 }
